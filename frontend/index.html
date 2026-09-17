@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Sakti - Multilingual AI Assistant for Ayurvedic IP & Regulatory Guidance</title>
+    <meta name="description" content="RAG-powered AI Assistant for Intellectual Property, Patents (Sec 3p/3e), TKDL prior art, NBA ABS clearance, and AYUSH / FSSAI regulatory licensing in Ayurveda.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- App Stylesheet -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="app-header">
+        <div class="brand-container">
+            <div class="brand-logo">
+                <i class="fas fa-leaf" style="color:#060E0B;"></i>
+            </div>
+            <div>
+                <h1 class="brand-title" data-i18n="appTitle">IP Sakti</h1>
+                <p class="brand-tagline" data-i18n="subtitle">Multilingual AI Assistant for Ayurvedic IP & Regulatory Guidance</p>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <div class="status-pill" id="statusPill">
+                <div class="status-dot"></div>
+                <span data-i18n="onlineStatus">Backend RAG Active</span>
+            </div>
+
+            <!-- Language Dropdown Selector -->
+            <select class="lang-selector" id="langSelect" aria-label="Select Language">
+                <option value="en">🌐 English (EN)</option>
+                <option value="hi">🇮🇳 हिंदी (Hindi)</option>
+                <option value="sa">🕉️ संस्कृतम् (Sanskrit)</option>
+                <option value="ta">🇮🇳 தமிழ் (Tamil)</option>
+                <option value="te">🇮🇳 తెలుగు (Telugu)</option>
+                <option value="mr">🇮🇳 मराठी (Marathi)</option>
+                <option value="gu">🇮🇳 ગુજરાતી (Gujarati)</option>
+                <option value="bn">🇮🇳 বাংলা (Bengali)</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Sidebar Tabs -->
+        <nav class="sidebar-nav">
+            <button class="nav-btn active" data-tab="tabChat">
+                <i class="fas fa-comments"></i>
+                <span data-i18n="navChat">AI Assistant</span>
+            </button>
+            <button class="nav-btn" data-tab="tabAnalyzer">
+                <i class="fas fa-flask"></i>
+                <span data-i18n="navAnalyzer">Formulation Analyzer</span>
+            </button>
+            <button class="nav-btn" data-tab="tabWizard">
+                <i class="fas fa-balance-scale"></i>
+                <span data-i18n="navWizard">License Navigator</span>
+            </button>
+            <button class="nav-btn" data-tab="tabNba">
+                <i class="fas fa-calculator"></i>
+                <span data-i18n="navNba">NBA ABS Calculator</span>
+            </button>
+            <button class="nav-btn" data-tab="tabTkdl">
+                <i class="fas fa-book-medical"></i>
+                <span data-i18n="navTkdl">TKDL & GI Explorer</span>
+            </button>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- TAB 1: AI Chatbot Assistant -->
+            <section id="tabChat" class="tab-view active">
+                <div class="glass-card chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message-bubble message-assistant">
+                            <h3>🌿 Welcome to IP Sakti AI Assistant</h3>
+                            <p>I am your specialized consultant for <strong>Ayurvedic Intellectual Property & Regulatory Compliance</strong>. Ask me anything about:</p>
+                            <ul>
+                                <li><strong>Indian Patents Act Section 3(p)</strong> (Traditional Knowledge Exclusion) & <strong>Section 3(e)</strong> (Synergy proof requirements)</li>
+                                <li><strong>TKDL Prior Art Searches</strong> & Revocation defenses</li>
+                                <li><strong>AYUSH Manufacturing Licenses</strong> (Form 25D Classical vs Form 25E Proprietary under Rule 158B)</li>
+                                <li><strong>FSSAI Nutraceutical Regulations</strong> vs AYUSH medicinal claims</li>
+                                <li><strong>National Biodiversity Authority (NBA)</strong> Form III Access & Benefit Sharing (ABS) clearances</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Input Controls -->
+                    <div class="chat-input-area">
+                        <div class="suggestion-chips">
+                            <span class="chip" onclick="sendChatMessage('How to overcome Section 3(p) for polyherbal syrup?')" data-i18n="sug1">How to overcome Section 3(p) for polyherbal syrup?</span>
+                            <span class="chip" onclick="sendChatMessage('Difference between Form 25D and Form 25E licenses?')" data-i18n="sug2">Difference between Form 25D and Form 25E licenses?</span>
+                            <span class="chip" onclick="sendChatMessage('Is TKDL clearance mandatory before filing Indian patent?')" data-i18n="sug3">Is TKDL clearance mandatory before filing Indian patent?</span>
+                            <span class="chip" onclick="sendChatMessage('FSSAI RDA limits vs AYUSH medicinal claims?')" data-i18n="sug4">FSSAI RDA limits vs AYUSH medicinal claims?</span>
+                        </div>
+
+                        <div class="input-row">
+                            <textarea id="chatInput" class="chat-textarea" rows="2" placeholder="Ask about Section 3(p), TKDL prior art, Form 25D/25E, FSSAI, or patenting turmeric + ashwagandha..." data-i18n="chatPlaceholder"></textarea>
+                            <button class="btn-icon" id="voiceBtn" onclick="handleVoiceInput()" title="Voice Input" aria-label="Voice Input">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="btn-primary" onclick="sendChatMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                                <span data-i18n="sendBtn">Ask IP Sakti</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: Formulation Patentability Analyzer -->
+            <section id="tabAnalyzer" class="tab-view">
+                <div class="glass-card">
+                    <h2 class="card-title" data-i18n="analyzerTitle"><i class="fas fa-vial"></i> Ayurvedic Formulation Patentability Analyzer</h2>
+                    <p class="card-subtitle" data-i18n="analyzerDesc">Evaluate Section 3(p) patent risk, TKDL prior art overlap, and Section 3(e) synergy requirements.</p>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;">
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="formNameLabel">Formulation / Product Name</label>
+                            <input type="text" id="formName" class="form-control" placeholder="e.g., Liposomal Triphala Curcumin Extract" data-i18n="formNameHolder">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="ingredientsLabel">Herbal Ingredients (comma separated)</label>
+                            <input type="text" id="formIngredients" class="form-control" placeholder="e.g., Turmeric, Ashwagandha, Piperine, Neem" data-i18n="ingredientsHolder">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="noveltyLabel">Novel Extraction / Technology Process</label>
+                        <input type="text" id="formNovelty" class="form-control" placeholder="e.g., Phytosome nano-emulsion with 5x bioavailability enhancement" data-i18n="noveltyHolder">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="intendedUseLabel">Intended Therapeutic Benefit</label>
+                        <input type="text" id="formIntended" class="form-control" placeholder="e.g., Anti-inflammatory joint pain relief" data-i18n="intendedUseHolder">
+                    </div>
+
+                    <button class="btn-primary" style="margin-top:0.5rem; width:100%; justify-content:center;" onclick="runFormulationAnalysis()">
+                        <i class="fas fa-search-plus"></i>
+                        <span data-i18n="analyzeBtn">Analyze Patentability & Prior Art</span>
+                    </button>
+                </div>
+
+                <!-- Analysis Results Section -->
+                <div id="analyzerResults" style="display:none;"></div>
+            </section>
+
+            <!-- TAB 3: Regulatory License Navigator Wizard -->
+            <section id="tabWizard" class="tab-view">
+                <div class="glass-card">
+                    <h2 class="card-title" data-i18n="wizardTitle"><i class="fas fa-file-invoice"></i> AYUSH vs FSSAI Regulatory License Navigator</h2>
+                    <p class="card-subtitle" data-i18n="wizardDesc">Determine whether your product needs Form 25D, Form 25E (Rule 158B), or FSSAI Nutraceutical licensing.</p>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;">
+                        <div class="form-group">
+                            <label class="form-label">Product Category</label>
+                            <select id="wizCategory" class="form-control">
+                                <option value="classical">Classical Ayurvedic Remedy (Recorded in API / Charaka Samhita)</option>
+                                <option value="proprietary">Proprietary Polyherbal Product (P&P Medicine)</option>
+                                <option value="health_supplement">Health Supplement / Dietary Nutraceutical</option>
+                                <option value="cosmetic">Herbal Cosmetic / Skin Care</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Are Therapeutic / Disease Cure Claims Made?</label>
+                            <select id="wizClaims" class="form-control">
+                                <option value="true">Yes (Claims to treat, prevent, or mitigate disease/condition)</option>
+                                <option value="false">No (General health maintenance & wellness claims only)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Dosage Form</label>
+                            <select id="wizDosage" class="form-control">
+                                <option value="traditional_asava">Classical Form (Churna, Kwath, Asava, Arishta, Bhasma)</option>
+                                <option value="tablet">Modern Oral Solid (Tablet / Capsule)</option>
+                                <option value="syrup">Oral Liquid Syrup</option>
+                                <option value="nano_emulsion">Novel Delivery (Liposome / Nano-emulsion)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Ingredient Formulation Source</label>
+                            <select id="wizSource" class="form-control">
+                                <option value="api_texts">Strictly from Ayurvedic Pharmacopoeia of India (First Schedule)</option>
+                                <option value="novel_combination">Novel Combination of Traditional Herbs</option>
+                                <option value="standardized_extract">Standardized Phytochemical Extracts (e.g. 95% Curcumin)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" style="margin-top:0.5rem; width:100%; justify-content:center;" onclick="runLicenseWizard()">
+                        <i class="fas fa-route"></i>
+                        <span>Determine Regulatory License Pathway</span>
+                    </button>
+                </div>
+
+                <div id="wizardResults" style="display:none;"></div>
+            </section>
+
+            <!-- TAB 4: NBA ABS Calculator -->
+            <section id="tabNba" class="tab-view">
+                <div class="glass-card">
+                    <h2 class="card-title" data-i18n="nbaTitle"><i class="fas fa-calculator"></i> National Biodiversity Act (NBA) ABS Royalty Calculator</h2>
+                    <p class="card-subtitle" data-i18n="nbaDesc">Calculate mandatory Access & Benefit Sharing contribution under Biological Diversity Act 2002.</p>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;">
+                        <div class="form-group">
+                            <label class="form-label">Annual Gross Ex-Factory Turnover (in ₹ INR)</label>
+                            <input type="number" id="nbaTurnover" class="form-control" placeholder="e.g. 25000000 (2.5 Crores)" value="15000000">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Entity Shareholding Structure</label>
+                            <select id="nbaEntity" class="form-control">
+                                <option value="indian">Indian Entity (100% Domestic Shareholding)</option>
+                                <option value="foreign_with_foreign_equity">Foreign Entity / Entity with Non-Resident / Foreign Equity</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" style="margin-top:0.5rem; width:100%; justify-content:center;" onclick="calculateNbaAbs()">
+                        <i class="fas fa-coins"></i>
+                        <span>Calculate ABS Royalty Contribution</span>
+                    </button>
+                </div>
+
+                <div id="nbaResults" style="display:none;"></div>
+            </section>
+
+            <!-- TAB 5: TKDL & GI Knowledge Explorer -->
+            <section id="tabTkdl" class="tab-view">
+                <div class="glass-card">
+                    <h2 class="card-title" data-i18n="tkdlTitle"><i class="fas fa-book-medical"></i> TKDL & IPC Patent Classification Explorer</h2>
+                    <p class="card-subtitle" data-i18n="tkdlDesc">Browse classical Sanskrit Ayurvedic remedies, Latin plant names, and IPC A61K classification codes.</p>
+
+                    <div class="form-group" style="margin-bottom:1.5rem;">
+                        <div class="input-row">
+                            <input type="text" id="tkdlSearchInput" class="form-control" placeholder="Search by herb name (e.g., Turmeric, Ashwagandha, Neem, Tulsi)..." onkeyup="searchTkdl()">
+                            <button class="btn-primary" onclick="searchTkdl()">
+                                <i class="fas fa-search"></i>
+                                <span>Search</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x:auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Herb / Entity</th>
+                                    <th>Sanskrit Name</th>
+                                    <th>Botanical (Latin) Name</th>
+                                    <th>IPC Code</th>
+                                    <th>TKDL Prior Art Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tkdlTableBody">
+                                <!-- Populated dynamically by app.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Frontend Scripts -->
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/chat.js"></script>
+    <script src="/static/js/analyzer.js"></script>
+    <script src="/static/js/wizard.js"></script>
+    <script src="/static/js/nba.js"></script>
+    <script src="/static/js/app.js"></script>
+
+</body>
+</html>
