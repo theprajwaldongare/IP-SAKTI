@@ -1,36 +1,27 @@
 """
 LLM Service Module for IP Sakti.
 Integrates Google Gemini API for real-time generative responses with RAG injection.
-Includes an intelligent RAG fallback synthesis engine for zero-config offline execution.
 """
 
 import os
-import json
 import requests
-from typing import Dict, Any, List
+from typing import Dict, Any
 from app.config import settings
-from app.multilingual import get_localized_header
+from app.multilingual import LANGUAGES
 
-SYSTEM_PROMPT = """You are 'IP Sakti', an expert AI consultant on Intellectual Property Rights (IPR), Patentability (Indian Patent Act 1970 Sec 3(p), 3(e)), Traditional Knowledge Digital Library (TKDL), Biological Diversity Act 2002 (NBA ABS), and AYUSH / FSSAI regulatory compliance for Ayurvedic formulations and products.
-
-Always ground your answers in the retrieved RAG Context provided below.
-Provide structured, clear, and actionable advice with headers, bullet points, legal section citations, and step-by-step guidance.
-Respond in the language requested by the user.
-"""
-
-def call_gemini_api(prompt: str, system_instruction: str = SYSTEM_PROMPT) -> str:
-    """Call Google Gemini API if GEMINI_API_KEY is available."""
+def call_gemini_api(prompt: str, system_instruction: str) -> str:
+    """Call Google Gemini API."""
     api_key = settings.GEMINI_API_KEY or os.getenv("GEMINI_API_KEY", "")
     if not api_key:
-        return ""
+        return "API Error: GEMINI_API_KEY is missing. Please add it to your .env file."
     
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key={api_key}"
     headers = {"Content-Type": "application/json"}
     payload = {
         "contents": [
             {
                 "role": "user",
-                "parts": [{"text": f"{system_instruction}\n\nUser Query & Context:\n{prompt}"}]
+                "parts": [{"text": f"{system_instruction}\n\n{prompt}"}]
             }
         ],
         "generationConfig": {
@@ -41,7 +32,7 @@ def call_gemini_api(prompt: str, system_instruction: str = SYSTEM_PROMPT) -> str
     }
     
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=12)
+        response = requests.post(url, headers=headers, json=payload, timeout=45)
         if response.status_code == 200:
             res_json = response.json()
             candidates = res_json.get("candidates", [])
@@ -49,87 +40,182 @@ def call_gemini_api(prompt: str, system_instruction: str = SYSTEM_PROMPT) -> str
                 parts = candidates[0].get("content", {}).get("parts", [])
                 if parts:
                     return parts[0].get("text", "")
+        else:
+            return f"API Error: {response.status_code} - {response.text}"
     except Exception as e:
-        print(f"[Gemini API Exception]: {e}")
+        return f"[Gemini API Exception]: {e}"
         
-    return ""
+    return "Error: Failed to generate response from Gemini API."
 
-def synthesize_rag_fallback(query: str, rag_data: Dict[str, Any], lang: str = "en") -> str:
-    """
-    Intelligent Dynamic RAG Synthesizer when no external LLM API key is present.
-    Constructs a rich, professional, domain-grounded response using retrieved context.
-    """
-    docs = rag_data.get("docs", [])
-    citations = rag_data.get("citations", [])
-    ingredients = rag_data.get("matched_ingredients", [])
-    
-    disclaimer = get_localized_header(lang, "disclaimer")
-    sources_header = get_localized_header(lang, "sources")
-    action_header = get_localized_header(lang, "action_plan")
-    
-    response_parts = []
-    
-    # Header & Overview
-    response_parts.append(f"### 🛡️ IP Sakti Legal & Regulatory Guidance")
-    
-    if ingredients:
-        ing_str = ", ".join([f"**{i['ingredient'].title()}** ({i['sanskrit']}, *{i['latin']}*)" for i in ingredients])
-        response_parts.append(f"**Identified Botanical Components**: {ing_str}\n")
-    
-    # Primary Retrieval Snippets & Analysis
-    response_parts.append("#### 📑 Key Findings & Regulatory Directives:")
-    for idx, doc in enumerate(docs, 1):
-        response_parts.append(f"**{idx}. {doc['title']}** ({doc['category']})")
-        # Extract main guidance points
-        content_lines = [line.strip() for line in doc['content'].split('\n') if line.strip()]
-        for line in content_lines[:4]:
-            response_parts.append(f"- {line}")
-        response_parts.append("")
-        
-    # Ingredient-specific TKDL Risk if present
-    if ingredients:
-        response_parts.append("#### 🌿 Specific Herbal Prior Art & IPC Classification:")
-        for ing in ingredients:
-            response_parts.append(f"- **{ing['ingredient'].title()}**: Sanskrit: `{ing['sanskrit']}` | Latin: `*{ing['latin']}*` | Recommended IPC Subclass: `{ing['ipc']}` | TKDL Status: *{ing['tkdl_status']}*")
-        response_parts.append("")
-        
-    # Actionable Steps
-    response_parts.append(f"#### 🎯 {action_header}:")
-    if "patent" in query.lower() or "section 3p" in query.lower() or "tkdl" in query.lower():
-        response_parts.append("1. **Verify Prior Art in TKDL**: Conduct thorough search in CSIR-TKDL database for identical classical references before filing.")
-        response_parts.append("2. **Establish Statistical Synergy**: Conduct comparative bio-assays demonstrating that combined ingredient efficacy exceeds sum of individual herbal components (Synergy Index > 1.0).")
-        response_parts.append("3. **Highlight Novel Samskara / Extraction**: Document specific non-aqueous extraction, bio-enhancers (e.g., Trikatu/Piperine), or liposomal drug delivery pathways.")
-        response_parts.append("4. **Apply for NBA Form III Clearance**: Submit Form III to National Biodiversity Authority prior to filing patent grant if using Indian botanicals.")
-    elif "license" in query.lower() or "form 25" in query.lower() or "ayush" in query.lower() or "fssai" in query.lower():
-        response_parts.append("1. **Determine Intent**: Use Form 25D for exact classical remedies in Ayurvedic Pharmacopoeia of India (API); Use Form 25E for novel combinations or proprietary dosage forms.")
-        response_parts.append("2. **GMP Schedule T Compliance**: Ensure manufacturing facility meets Schedule T requirements with SLA validation.")
-        response_parts.append("3. **FSSAI Boundary**: If marketing as health supplement, ensure label contains NO therapeutic/cure claims and ingredients comply with FSSAI Schedule VI RDA limits.")
-    else:
-        response_parts.append("1. **Document Formulation Standards**: Prepare complete batch manufacturing records (BMR) with raw material standardization certificates.")
-        response_parts.append("2. **Obtain NBA Clearance**: Ensure compliance under Biological Diversity Act for raw bio-resource procurement.")
-        response_parts.append("3. **Consult Registered Patent Agent**: Engage a registered Indian Patent Agent specializing in traditional phytomedicine patents.")
-        
-    # Citations
-    response_parts.append(f"\n#### 📚 {sources_header}:")
-    for cit in citations:
-        response_parts.append(f"- `[{cit['id']}]` **{cit['title']}** — *{cit['source']}*")
-        
-    response_parts.append(f"\n> ⚖️ *{disclaimer}*")
-    
-    return "\n".join(response_parts)
-
-def generate_rag_response(query: str, lang: str = "en", rag_data: Dict[str, Any] = None) -> str:
-    """Generate final response combining Gemini API or RAG dynamic synthesis."""
+def generate_rag_response(query: str, lang: str = "en", jurisdiction: str = "india", rag_data: Dict[str, Any] = None) -> str:
+    """Generate response using Gemini API with strict language & jurisdiction rules."""
     if not rag_data:
         from app.rag_engine import retrieve_context
         rag_data = retrieve_context(query)
         
-    # Try Gemini API call first
-    gemini_prompt = f"Target Language: {lang}\nQuery: {query}\n\nRetrieved Context:\n{rag_data['context_str']}"
-    api_response = call_gemini_api(gemini_prompt)
+    target_lang_name = LANGUAGES.get(lang, {}).get("name", "English")
     
-    if api_response and len(api_response.strip()) > 50:
-        return api_response
+    if jurisdiction == "international":
+        jur_guidance = """JURISDICTION: INTERNATIONAL IP REGIME
+Focus on: WIPO Treaty on Intellectual Property, Genetic Resources and Associated Traditional Knowledge (GRATK 2024), Patent Cooperation Treaty (PCT), TRIPS Agreement, Nagoya Protocol on Access and Benefit Sharing, Budapest Treaty for Micro-organisms, and key export compliance frameworks (US FDA Botanical Drug Guidance / EU EMA Herbal Directives). Highlight mandatory disclosure of origin."""
+    else:
+        jur_guidance = """JURISDICTION: INDIAN NATIONAL IP REGIME
+Focus on: Indian Patents Act 1970 (Section 3(p) traditional knowledge, Section 3(e) mere admixture, Section 3(c) natural substances), CSIR-TKDL prior art defense, Biological Diversity Act 2002 (amended 2023) NBA Form III clearance, and Drugs & Cosmetics Act (Form 25D In-House vs Form 25E Loan License, Rule 158B for proprietary medicines)."""
+    
+    system_instruction = f"""You are 'IP Sakti', an authoritative AI advisor for Ayurvedic Intellectual Property & Regulatory Compliance.
+
+{jur_guidance}
+
+CRITICAL LANGUAGE REQUIREMENT: You MUST write your response ENTIRELY in {target_lang_name}. Do not switch back to English mid-response except for specific Latin plant names, IPC codes, or standard statutory labels.
+Ground your guidance in the provided RAG Context whenever relevant. Give clear, direct bullet points and actionable legal steps.
+"""
+    
+    gemini_prompt = f"User Query: {query}\n\nRetrieved Knowledge Base Context:\n{rag_data['context_str']}"
+    
+    return call_gemini_api(gemini_prompt, system_instruction)
+
+# """
+# LLM Service Module for IP Sakti.
+# Integrates Google Gemini API for real-time generative responses with RAG injection.
+# """
+
+# import os
+# import requests
+# from typing import Dict, Any
+# from app.config import settings
+# from app.multilingual import LANGUAGES
+
+# def call_gemini_api(prompt: str, system_instruction: str) -> str:
+#     """Call Google Gemini API."""
+#     api_key = settings.GEMINI_API_KEY or os.getenv("GEMINI_API_KEY", "")
+#     if not api_key:
+#         return "API Error: GEMINI_API_KEY is missing. Please add it to your .env file."
+    
+#     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key={api_key}"
+#     headers = {"Content-Type": "application/json"}
+#     payload = {
+#         "contents": [
+#             {
+#                 "role": "user",
+#                 "parts": [{"text": f"{system_instruction}\n\n{prompt}"}]
+#             }
+#         ],
+#         "generationConfig": {
+#             "temperature": 0.3,
+#             "topP": 0.8,
+#             "maxOutputTokens": 1024
+#         }
+#     }
+    
+#     try:
+#         response = requests.post(url, headers=headers, json=payload, timeout=45)
+#         if response.status_code == 200:
+#             res_json = response.json()
+#             candidates = res_json.get("candidates", [])
+#             if candidates:
+#                 parts = candidates[0].get("content", {}).get("parts", [])
+#                 if parts:
+#                     return parts[0].get("text", "")
+#         else:
+#             return f"API Error: {response.status_code} - {response.text}"
+#     except Exception as e:
+#         return f"[Gemini API Exception]: {e}"
         
-    # Fallback to dynamic RAG synthesis engine
-    return synthesize_rag_fallback(query, rag_data, lang)
+#     return "Error: Failed to generate response from Gemini API."
+
+# def generate_rag_response(query: str, lang: str = "en", jurisdiction: str = "india", rag_data: Dict[str, Any] = None) -> str:
+#     """Generate response using Gemini API with strict language & jurisdiction rules."""
+#     if not rag_data:
+#         from app.rag_engine import retrieve_context
+#         rag_data = retrieve_context(query)
+        
+#     target_lang_name = LANGUAGES.get(lang, {}).get("name", "English")
+    
+#     if jurisdiction == "international":
+#         jur_guidance = """JURISDICTION: INTERNATIONAL IP REGIME
+# Focus on: WIPO Treaty on Intellectual Property, Genetic Resources and Associated Traditional Knowledge (GRATK 2024), Patent Cooperation Treaty (PCT), TRIPS Agreement, Nagoya Protocol on Access and Benefit Sharing, Budapest Treaty for Micro-organisms, and key export compliance frameworks (US FDA Botanical Drug Guidance / EU Herbal Medicinal Products Directive EMA/HMPC). Explain mandatory disclosure requirements for genetic resources."""
+#     else:
+#         jur_guidance = """JURISDICTION: INDIAN NATIONAL IP REGIME
+# Focus on: Indian Patents Act 1970 (Section 3(p) traditional knowledge, Section 3(e) admixture, Section 3(c) natural substances), CSIR-TKDL prior art defense, Biological Diversity Act 2002 (amended 2023) NBA Form III clearance, and Drugs & Cosmetics Act (Form 25D In-House vs Form 25E Loan License, Rule 158B for proprietary medicines)."""
+    
+#     system_instruction = f"""You are 'IP Sakti', an authoritative AI advisor for Ayurvedic Intellectual Property & Regulatory Compliance.
+
+# {jur_guidance}
+
+# CRITICAL LANGUAGE REQUIREMENT: You MUST write your response ENTIRELY in {target_lang_name}. Do not switch back to English mid-response except for specific Latin plant names, IPC codes, or standard statutory labels.
+# Ground your guidance in the provided RAG Context whenever relevant. Give clear, direct bullet points and actionable legal steps.
+# """
+    
+#     gemini_prompt = f"User Query: {query}\n\nRetrieved Knowledge Base Context:\n{rag_data['context_str']}"
+    
+#     return call_gemini_api(gemini_prompt, system_instruction)
+
+# # """
+# # LLM Service Module for IP Sakti.
+# # Integrates Google Gemini API for real-time generative responses with RAG injection.
+# # """
+
+# # import os
+# # import requests
+# # from typing import Dict, Any
+# # from app.config import settings
+# # from app.multilingual import LANGUAGES
+
+# # def call_gemini_api(prompt: str, system_instruction: str) -> str:
+# #     """Call Google Gemini API."""
+# #     api_key = settings.GEMINI_API_KEY or os.getenv("GEMINI_API_KEY", "")
+# #     if not api_key:
+# #         return "API Error: GEMINI_API_KEY is missing. Please add it to your .env file."
+    
+# #     # url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+# #     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key={api_key}"
+# #     headers = {"Content-Type": "application/json"}
+# #     payload = {
+# #         "contents": [
+# #             {
+# #                 "role": "user",
+# #                 "parts": [{"text": f"{system_instruction}\n\n{prompt}"}]
+# #             }
+# #         ],
+# #         "generationConfig": {
+# #             "temperature": 0.3,
+# #             "topP": 0.8,
+# #             "maxOutputTokens": 1024
+# #         }
+# #     }
+    
+# #     try:
+# #         response = requests.post(url, headers=headers, json=payload, timeout=45)
+# #         if response.status_code == 200:
+# #             res_json = response.json()
+# #             candidates = res_json.get("candidates", [])
+# #             if candidates:
+# #                 parts = candidates[0].get("content", {}).get("parts", [])
+# #                 if parts:
+# #                     return parts[0].get("text", "")
+# #         else:
+# #             return f"API Error: {response.status_code} - {response.text}"
+# #     except Exception as e:
+# #         return f"[Gemini API Exception]: {e}"
+        
+# #     return "Error: Failed to generate response from Gemini API."
+
+# # def generate_rag_response(query: str, lang: str = "en", rag_data: Dict[str, Any] = None) -> str:
+# #     """Generate final response using Gemini API with strict language enforcement."""
+# #     if not rag_data:
+# #         from app.rag_engine import retrieve_context
+# #         rag_data = retrieve_context(query)
+        
+# #     target_lang_name = LANGUAGES.get(lang, {}).get("name", "English")
+    
+# #     # 1. Force the prompt to strictly adhere to the requested language
+# #     system_instruction = f"""You are 'IP Sakti', an expert AI consultant on Intellectual Property Rights (IPR), Patentability (Indian Patent Act 1970 Sec 3(p), 3(e)), Traditional Knowledge Digital Library (TKDL), Biological Diversity Act 2002 (NBA ABS), and AYUSH / FSSAI regulatory compliance.
+
+# # CRITICAL INSTRUCTION: You MUST write your ENTIRE response in {target_lang_name}. Do not use English unless you are citing a specific Latin botanical name or an IPC code. 
+
+# # Always ground your answers in the retrieved RAG Context provided below. Provide structured, clear, and actionable advice with headers, bullet points, and step-by-step guidance.
+# # """
+    
+# #     gemini_prompt = f"User Query: {query}\n\nRetrieved Context:\n{rag_data['context_str']}"
+    
+# #     return call_gemini_api(gemini_prompt, system_instruction)

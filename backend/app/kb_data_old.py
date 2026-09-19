@@ -15,7 +15,8 @@ KNOWLEDGE_BASE = [
 Key Requirements for Ayurvedic Patentability:
 1. Mere combination of classical herbs (e.g., Turmeric + Neem) described in Samhitas (Charaka, Sushruta, Astanga Hridaya) is excluded under Sec 3(p).
 2. To overcome Section 3(p), the applicant must demonstrate SYNERGY (where the combined biological effect is statistically superior to sum of individual ingredients) or a NOVEL extraction pathway/standardized biomarker ratio/novel delivery mechanism (e.g. liposomal, phytosome, nano-emulsion).
-3. The synergistic claims must be supported by quantitative bio-assay data, in-vitro/in-vivo comparative experimental results in the specification."""
+3. The synergistic claims must be supported by quantitative bio-assay data, in-vitro/in-vivo comparative experimental results in the specification.""",
+        "source": "Indian Patents Act, 1970 (as amended 2005) - IPO Guidelines for Patenting Traditional Knowledge"
     },
     {
         "id": "pat_sec3e",
@@ -26,16 +27,8 @@ Key Requirements for Ayurvedic Patentability:
 
 In Ayurvedic Polyherbal formulations:
 - Combining Herb A (antidiabetic) + Herb B (antidiabetic) will be rejected under 3(e) unless a synergistic interaction is proven.
-- Experimental proof: Must include individual ingredient dosage testing vs combined dosage showing non-additive, enhanced therapeutic efficacy (Synergy Index > 1.0)."""
-    },
-    {
-        "id": "pat_sec3c",
-        "category": "Patent Law",
-        "title": "Section 3(c) of Indian Patents Act - Naturally Occurring Substances",
-        "keywords": ["section 3c", "naturally occurring", "plants", "raw herbs", "turmeric", "neem"],
-        "content": """Section 3(c) prohibits the patenting of 'the mere discovery of a scientific principle or the formulation of an abstract theory or discovery of any living thing or non-living substance occurring in nature.'
-        
-This means you cannot patent a naturally occurring plant like Turmeric or Neem in its natural state, even if you discover a new property it possesses."""
+- Experimental proof: Must include individual ingredient dosage testing vs combined dosage showing non-additive, enhanced therapeutic efficacy (Synergy Index > 1.0).""",
+        "source": "Manual of Patent Office Practice and Procedure (MPOPP), CGPDTM India"
     },
     {
         "id": "tkdl_01",
@@ -47,7 +40,8 @@ This means you cannot patent a naturally occurring plant like Turmeric or Neem i
 Impact on Patent Applications:
 - International Patent Offices (EPO, USPTO, JPO, IPO) access TKDL to verify prior art.
 - If an Ayurvedic formulation matches a classical remedy recorded in Charaka Samhita, Sushruta Samhita, Sharangdhara Samhita, Rasa Ratna Samuccaya, or API (Ayurvedic Pharmacopoeia of India), it is cited as prior art to reject claims.
-- Strategy: Formulations must demonstrate clear non-obvious modifications, specific novel processing (Samskara), novel solvent extractions beyond traditional water/decoction/asava methods."""
+- Strategy: Formulations must demonstrate clear non-obvious modifications, specific novel processing (Samskara), novel solvent extractions beyond traditional water/decoction/asava methods.""",
+        "source": "CSIR-TKDL Access Agreement & IPO Search Guidelines"
     },
     {
         "id": "nba_01",
@@ -61,21 +55,37 @@ Impact on Patent Applications:
    - Annual Gross Ex-Factory Sale Price up to ₹1 Crore: 0.1% ABS Royalty.
    - ₹1 Crore to ₹3 Crore: 0.2% ABS Royalty.
    - Exceeding ₹3 Crore: 0.5% ABS Royalty.
-4. Section 6(1) IP Approval: NBA Form III approval is mandatory BEFORE obtaining grant of patent in India or overseas if the invention utilizes Indian biological material."""
+4. Section 6(1) IP Approval: NBA Form III approval is mandatory BEFORE obtaining grant of patent in India or overseas if the invention utilizes Indian biological material.""",
+        "source": "Biological Diversity Act, 2002 & BD (Amendment) Act, 2023 - NBA Guidelines"
     },
     {
         "id": "ayush_25d",
         "category": "Regulatory Licensing",
-        "title": "AYUSH Manufacturing License: Form 25D (In-House Manufacturing)",
-        "keywords": ["form 25d", "in-house", "ayush license", "gmp certification", "manufacturing license"],
-        "content": """Form 25D is the standard license issued by State Licensing Authorities (SLA) to manufacture AYUSH drugs in your OWN manufacturing facility. It covers BOTH Classical Ayurvedic Medicines AND Proprietary Ayurvedic Medicines, provided the facility meets Schedule T GMP standards."""
+        "title": "AYUSH Manufacturing License: Form 25D (Classical Ayurvedic Medicines)",
+        "keywords": ["form 25d", "classical ayurvedic medicine", "ayush license", "gmp certification", "schedule t", "api standards", "manufacturing license"],
+        "content": """Form 25D is the license issued by State Licensing Authorities (SLA - AYUSH) to manufacture Classical Ayurvedic Medicines.
+
+Key Requirements:
+1. Formulation Source: Must strictly adhere to recipes mentioned in authoritative texts specified in the First Schedule of Drugs & Cosmetics Act, 1940 (e.g. Ayurvedic Pharmacopoeia of India, Sahasrayogam, Bharat Bhashajya Ratnakara).
+2. Clinical Data: NO prior clinical trial data required since classical safety and efficacy is historically recognized under section 3(a) of Drugs & Cosmetics Act.
+3. Quality & Safety: Must comply with Schedule T Good Manufacturing Practices (GMP) and API limits for heavy metals (Lead, Arsenic, Cadmium, Mercury), pesticide residues, and aflatoxins.
+4. Labeling: Must display exact textual reference and dosage on the outer carton.""",
+        "source": "Drugs and Cosmetics Act, 1940 & Rules 1945 (Rule 153, Schedule T)"
     },
     {
         "id": "ayush_25e",
         "category": "Regulatory Licensing",
-        "title": "AYUSH Manufacturing License: Form 25E (Loan License / Third-Party)",
-        "keywords": ["form 25e", "loan license", "third party manufacturing", "contract manufacturing"],
-        "content": """Form 25E is a Loan License. It is issued when the applicant does not own a manufacturing facility but intends to use the manufacturing capacity of another licensee (who holds a valid Form 25D). Rule 158B dictates the safety/efficacy requirements for proprietary drugs regardless of whether 25D or 25E is used."""
+        "title": "AYUSH Manufacturing License: Form 25E (Proprietary Ayurvedic Medicines - Rule 158B)",
+        "keywords": ["form 25e", "proprietary ayurvedic medicine", "rule 158b", "patent or proprietary", "proof of efficacy", "safety data", "pilot clinical study"],
+        "content": """Form 25E grants approval for Patent or Proprietary (P&P) Ayurvedic Medicines under Rule 158B of Drugs & Cosmetics Rules.
+
+Requirements under Rule 158B:
+1. Product Concept: Formulation containing ingredients mentioned in Ayurvedic texts, but in non-classical ratios, novel dosage forms (tablets, capsules, syrups), or new combined indications.
+2. Safety & Efficacy Evidence:
+   - Category A (New Combination of Known Ayurvedic Ingredients): Requires published scientific literature or 1-year safety pilot observation study.
+   - Category B (New Extract Ratio or Non-traditional Solvent): Requires acute/sub-acute animal toxicity studies and Phase I/II clinical trial evidence.
+3. Labeling: Cannot claim instant cures for diseases listed in Schedule J (e.g., Cancer, Diabetes, AIDS, Blindness). Must clearly state 'Proprietary Ayurvedic Medicine'.""",
+        "source": "Drugs & Cosmetics Rules 1945 - Rule 158B Notification (GSR 85(E))"
     },
     {
         "id": "fssai_vs_ayush",
@@ -93,7 +103,8 @@ Impact on Patent Applications:
    - Scope: Maintenance of health, general well-being, dietary supplementation. CANNOT make disease cure/treatment claims.
    - Ingredients: Schedule VI approved botanical ingredients, vitamins, minerals within Recommended Daily Allowance (RDA) limits.
    - Regulatory Body: Food Safety and Standards Authority of India (FSSAI).
-   - Penalty for Misclassification: Labeling therapeutic claims on FSSAI products leads to heavy fines under Section 52/53 of FSS Act."""
+   - Penalty for Misclassification: Labeling therapeutic claims on FSSAI products leads to heavy fines under Section 52/53 of FSS Act.""",
+        "source": "FSSAI (Health Supplements, Nutraceuticals, Food for Special Dietary Use) Regulations, 2022"
     },
     {
         "id": "ctri_trials",
@@ -106,7 +117,8 @@ Validation Roadmap:
 1. Ethical Clearance: Approval from Institutional Ethics Committee (IEC) registered with CDSCO/DHR.
 2. Trial Registration: Mandatory registration on ctri.nic.in BEFORE enrolling the first participant.
 3. Guidelines: Must follow Ministry of AYUSH General Guidelines for Clinical Evaluation of Ayurvedic Interventions and ICMR Ethical Guidelines.
-4. Outcome Indicators: Must use validated primary/secondary clinical endpoints alongside traditional Ayurvedic parameter measurements (Agni, Prakriti, Dhatu balance)."""
+4. Outcome Indicators: Must use validated primary/secondary clinical endpoints alongside traditional Ayurvedic parameter measurements (Agni, Prakriti, Dhatu balance).""",
+        "source": "ICMR Guidelines for Biomedical Research & Ministry of AYUSH Clinical Trial Protocols"
     },
     {
         "id": "gi_tags",
@@ -123,7 +135,8 @@ Key Ayurvedic GI Tags in India:
 5. Jalgaon Banana & Nagpur Orange - Applied in specific fermented preparations.
 
 Commercial IP Advantage:
-- Authorized users of GI tags gain premium market positioning and international protection under TRIPS Agreement against counterfeits."""
+- Authorized users of GI tags gain premium market positioning and international protection under TRIPS Agreement against counterfeits.""",
+        "source": "Geographical Indications of Goods (Registration and Protection) Act, 1999"
     },
     {
         "id": "ipc_classification",
@@ -136,7 +149,8 @@ Commercial IP Advantage:
 2. A61K 35/00: Medicinal preparations containing materials of animal or indeterminate origin (e.g., Panchagavya, Honey, Ghee vehicles).
 3. A61P 29/00: Non-central analgesic, antipyretic or anti-inflammatory remedies (e.g. Shallaki/Boswellia formulations).
 4. A61P 3/10: Drugs for treatment of Diabetes Mellitus (e.g. Gurmar/Gymnema sylvestre, Vijaysar).
-5. A61K 9/127 & A61K 9/51: Nano-carrier, phytosome, liposomal delivery of phytochemicals (High patent approval probability)."""
+5. A61K 9/127 & A61K 9/51: Nano-carrier, phytosome, liposomal delivery of phytochemicals (High patent approval probability).""",
+        "source": "WIPO International Patent Classification Manual (IPC 2024.01)"
     }
 ]
 

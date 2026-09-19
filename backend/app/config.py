@@ -1,5 +1,8 @@
 import os
+from dotenv import load_dotenv
 from pydantic import BaseModel
+
+load_dotenv()
 
 class Settings(BaseModel):
     PROJECT_NAME: str = "IP Sakti - Ayurvedic IP & Regulatory AI Assistant"

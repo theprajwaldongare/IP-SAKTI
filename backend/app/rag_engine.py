@@ -96,12 +96,15 @@ def retrieve_context(query: str, top_k: int = 3) -> Dict[str, Any]:
     citations = []
     
     for doc in retrieved_docs:
-        formatted_context += f"--- SOURCE [{doc['id']}]: {doc['title']} ({doc['source']}) ---\n"
+        # FIX: Use .get() to prevent KeyError if 'source' is missing from kb_data
+        doc_source = doc.get("source", "Official Legal Guidelines")
+        
+        formatted_context += f"--- SOURCE [{doc['id']}]: {doc['title']} ({doc_source}) ---\n"
         formatted_context += f"{doc['content']}\n\n"
         citations.append({
             "id": doc["id"],
             "title": doc["title"],
-            "source": doc["source"],
+            "source": doc_source,
             "relevance": doc.get("relevance_score", 1.0)
         })
         
@@ -111,3 +114,36 @@ def retrieve_context(query: str, top_k: int = 3) -> Dict[str, Any]:
         "citations": citations,
         "matched_ingredients": matched_ingredients
     }
+
+# def retrieve_context(query: str, top_k: int = 3) -> Dict[str, Any]:
+#     """
+#     Retrieve domain context and relevant glossary entities for a query.
+#     """
+#     retrieved_docs = rag_index.search(query, top_k=top_k)
+    
+#     # Check for ingredient matches in glossary
+#     query_lower = query.lower()
+#     matched_ingredients = []
+#     for name, details in AYURVEDIC_IPC_GLOSSARY.items():
+#         if name in query_lower or details["sanskrit"].lower() in query_lower or details["latin"].lower() in query_lower:
+#             matched_ingredients.append({"ingredient": name, **details})
+            
+#     formatted_context = ""
+#     citations = []
+    
+#     for doc in retrieved_docs:
+#         formatted_context += f"--- SOURCE [{doc['id']}]: {doc['title']} ({doc['source']}) ---\n"
+#         formatted_context += f"{doc['content']}\n\n"
+#         citations.append({
+#             "id": doc["id"],
+#             "title": doc["title"],
+#             "source": doc["source"],
+#             "relevance": doc.get("relevance_score", 1.0)
+#         })
+        
+#     return {
+#         "context_str": formatted_context,
+#         "docs": retrieved_docs,
+#         "citations": citations,
+#         "matched_ingredients": matched_ingredients
+#     }

@@ -83,29 +83,16 @@
             <!-- TAB 1: AI Chatbot Assistant -->
             <section id="tabChat" class="tab-view active">
                 <div class="glass-card chat-container">
-                    
-                    <!-- Jurisdiction Toggle -->
-                    <div class="jurisdiction-bar">
-                        <div class="jurisdiction-label">
-                            <i class="fas fa-gavel"></i>
-                            <span data-i18n="jurLabel">Legal Jurisdiction:</span>
-                        </div>
-                        <select id="chatJurisdiction" class="jurisdiction-select" aria-label="Legal Jurisdiction">
-                            <option value="india" data-i18n="jurIndia">🇮🇳 India (Patents Act 1970, AYUSH, NBA ABS)</option>
-                            <option value="international" data-i18n="jurIntl">🌐 International (WIPO GRATK 2024, PCT, TRIPS)</option>
-                        </select>
-                    </div>
-
                     <div class="chat-messages" id="chatMessages">
                         <div class="message-bubble message-assistant">
-                            <h3 data-i18n="welcomeHeading">🌿 Welcome to IP Sakti AI Assistant</h3>
-                            <p data-i18n="welcomeSub">I am your specialized consultant for Ayurvedic Intellectual Property & Regulatory Compliance. Ask me anything about:</p>
+                            <h3>🌿 Welcome to IP Sakti AI Assistant</h3>
+                            <p>I am your specialized consultant for <strong>Ayurvedic Intellectual Property & Regulatory Compliance</strong>. Ask me anything about:</p>
                             <ul>
-                                <li data-i18n="wItem1">Indian Patents Act Section 3(p) (Traditional Knowledge) & Section 3(e) (Synergy Proof)</li>
-                                <li data-i18n="wItem2">TKDL Prior Art Searches & Patent Revocation Defenses</li>
-                                <li data-i18n="wItem3">AYUSH Manufacturing Licenses (Form 25D In-House vs Form 25E Loan License under Rule 158B)</li>
-                                <li data-i18n="wItem4">FSSAI Nutraceutical Regulations vs AYUSH Medicinal Claims</li>
-                                <li data-i18n="wItem5">National Biodiversity Authority (NBA) Form III Access & Benefit Sharing (ABS) Clearances</li>
+                                <li><strong>Indian Patents Act Section 3(p)</strong> (Traditional Knowledge Exclusion) & <strong>Section 3(e)</strong> (Synergy proof requirements)</li>
+                                <li><strong>TKDL Prior Art Searches</strong> & Revocation defenses</li>
+                                <li><strong>AYUSH Manufacturing Licenses</strong> (Form 25D Classical vs Form 25E Proprietary under Rule 158B)</li>
+                                <li><strong>FSSAI Nutraceutical Regulations</strong> vs AYUSH medicinal claims</li>
+                                <li><strong>National Biodiversity Authority (NBA)</strong> Form III Access & Benefit Sharing (ABS) clearances</li>
                             </ul>
                         </div>
                     </div>
@@ -113,10 +100,10 @@
                     <!-- Input Controls -->
                     <div class="chat-input-area">
                         <div class="suggestion-chips">
-                            <span class="chip" onclick="sendChatMessage(this.textContent.trim())" data-i18n="sug1">How to overcome Section 3(p) for polyherbal syrup?</span>
-                            <span class="chip" onclick="sendChatMessage(this.textContent.trim())" data-i18n="sug2">Difference between Form 25D and Form 25E licenses?</span>
-                            <span class="chip" onclick="sendChatMessage(this.textContent.trim())" data-i18n="sug3">Is TKDL clearance mandatory before filing Indian patent?</span>
-                            <span class="chip" onclick="sendChatMessage(this.textContent.trim())" data-i18n="sug4">FSSAI RDA limits vs AYUSH medicinal claims?</span>
+                            <span class="chip" onclick="sendChatMessage('How to overcome Section 3(p) for polyherbal syrup?')" data-i18n="sug1">How to overcome Section 3(p) for polyherbal syrup?</span>
+                            <span class="chip" onclick="sendChatMessage('Difference between Form 25D and Form 25E licenses?')" data-i18n="sug2">Difference between Form 25D and Form 25E licenses?</span>
+                            <span class="chip" onclick="sendChatMessage('Is TKDL clearance mandatory before filing Indian patent?')" data-i18n="sug3">Is TKDL clearance mandatory before filing Indian patent?</span>
+                            <span class="chip" onclick="sendChatMessage('FSSAI RDA limits vs AYUSH medicinal claims?')" data-i18n="sug4">FSSAI RDA limits vs AYUSH medicinal claims?</span>
                         </div>
 
                         <div class="input-row">
@@ -139,7 +126,7 @@
                     <h2 class="card-title" data-i18n="analyzerTitle"><i class="fas fa-vial"></i> Ayurvedic Formulation Patentability Analyzer</h2>
                     <p class="card-subtitle" data-i18n="analyzerDesc">Evaluate Section 3(p) patent risk, TKDL prior art overlap, and Section 3(e) synergy requirements.</p>
 
-                    <div class="form-grid">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;">
                         <div class="form-group">
                             <label class="form-label" data-i18n="formNameLabel">Formulation / Product Name</label>
                             <input type="text" id="formName" class="form-control" placeholder="e.g., Liposomal Triphala Curcumin Extract" data-i18n="formNameHolder">
@@ -166,7 +153,8 @@
                     </button>
                 </div>
 
-                <div id="analyzerResults" style="display:none; width:100%;"></div>
+                <!-- Analysis Results Section -->
+                <div id="analyzerResults" style="display:none;"></div>
             </section>
 
             <!-- TAB 3: Regulatory License Navigator Wizard -->
@@ -175,7 +163,7 @@
                     <h2 class="card-title" data-i18n="wizardTitle"><i class="fas fa-file-invoice"></i> AYUSH vs FSSAI Regulatory License Navigator</h2>
                     <p class="card-subtitle" data-i18n="wizardDesc">Determine whether your product needs Form 25D, Form 25E (Rule 158B), or FSSAI Nutraceutical licensing.</p>
 
-                    <div class="form-grid">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;">
                         <div class="form-group">
                             <label class="form-label">Product Category</label>
                             <select id="wizCategory" class="form-control">
@@ -220,7 +208,7 @@
                     </button>
                 </div>
 
-                <div id="wizardResults" style="display:none; width:100%;"></div>
+                <div id="wizardResults" style="display:none;"></div>
             </section>
 
             <!-- TAB 4: NBA ABS Calculator -->
@@ -229,7 +217,7 @@
                     <h2 class="card-title" data-i18n="nbaTitle"><i class="fas fa-calculator"></i> National Biodiversity Act (NBA) ABS Royalty Calculator</h2>
                     <p class="card-subtitle" data-i18n="nbaDesc">Calculate mandatory Access & Benefit Sharing contribution under Biological Diversity Act 2002.</p>
 
-                    <div class="form-grid">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;">
                         <div class="form-group">
                             <label class="form-label">Annual Gross Ex-Factory Turnover (in ₹ INR)</label>
                             <input type="number" id="nbaTurnover" class="form-control" placeholder="e.g. 25000000 (2.5 Crores)" value="15000000">
@@ -250,7 +238,7 @@
                     </button>
                 </div>
 
-                <div id="nbaResults" style="display:none; width:100%;"></div>
+                <div id="nbaResults" style="display:none;"></div>
             </section>
 
             <!-- TAB 5: TKDL & GI Knowledge Explorer -->
@@ -269,7 +257,7 @@
                         </div>
                     </div>
 
-                    <div class="table-wrapper">
+                    <div style="overflow-x:auto;">
                         <table class="data-table">
                             <thead>
                                 <tr>
