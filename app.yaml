@@ -1,0 +1,9 @@
+kind: wasmer.io/App.v0
+name: ip-sakti
+owner: prajwal112
+annotations:
+  anybuild.run/config:
+    commands:
+      install: pip install -r backend/requirements.txt
+      start: python backend/run.py
+    python_main_file: backend/run.py
