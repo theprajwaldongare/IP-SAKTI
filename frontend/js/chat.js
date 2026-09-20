@@ -67,7 +67,8 @@ async function sendChatMessage(customQuery = null) {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
     try {
-        const response = await fetch("/api/chat", {
+        // const response = await fetch("/api/chat", {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/chat`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -224,7 +225,7 @@ async function playTextToSpeech(text, clickedBtn = null) {
     }
 
     try {
-        const response = await fetch('/api/tts', {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/tts`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: text, language: currentLang })

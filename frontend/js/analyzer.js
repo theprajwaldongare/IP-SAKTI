@@ -19,7 +19,7 @@ async function runFormulationAnalysis() {
     resultsContainer.innerHTML = `<em>Evaluating Section 3(p), TKDL prior art, and NBA ABS compliance...</em>`;
 
     try {
-        const response = await fetch("/api/analyze-formulation", {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/analyze-formulation`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

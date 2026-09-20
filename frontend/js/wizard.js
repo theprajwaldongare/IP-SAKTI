@@ -13,7 +13,7 @@ async function runLicenseWizard() {
     resultBox.innerHTML = `<em>Calculating regulatory pathway...</em>`;
 
     try {
-        const response = await fetch("/api/regulatory-wizard", {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/regulatory-wizard`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

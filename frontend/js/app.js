@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function checkBackendHealth() {
     const statusPill = document.getElementById("statusPill");
     try {
-        const res = await fetch("/health");
+        const res = await fetch(`${CONFIG.API_BASE_URL}/health`);
         if (res.ok) {
             const data = await res.json();
             statusPill.innerHTML = `
@@ -72,7 +72,7 @@ async function fetchTkdlData(query = "") {
     if (!tableBody) return;
 
     try {
-        const response = await fetch(`/api/tkdl-search?q=${encodeURIComponent(query)}`);
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/tkdl-search?q=${encodeURIComponent(query)}`);
         if (!response.ok) throw new Error("Failed to fetch TKDL data");
 
         const data = await response.json();

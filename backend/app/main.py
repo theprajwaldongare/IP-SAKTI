@@ -37,11 +37,13 @@ def health_check():
         "gemini_api_configured": bool(settings.GEMINI_API_KEY)
     }
 
-# Mount static frontend directory
+# Mount static frontend directories directly so paths match Vercel/Netlify perfectly
 frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend"))
 
 if os.path.exists(frontend_dir):
-    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+    # Mount css and js folders directly instead of using a "/static" wrapper
+    app.mount("/css", StaticFiles(directory=os.path.join(frontend_dir, "css")), name="css")
+    app.mount("/js", StaticFiles(directory=os.path.join(frontend_dir, "js")), name="js")
 
 @app.get("/")
 def serve_index():
@@ -49,3 +51,16 @@ def serve_index():
     if os.path.exists(index_file):
         return FileResponse(index_file)
     return {"message": "IP Sakti Backend API is running. Frontend directory not found at " + frontend_dir}
+
+# # Mount static frontend directory
+# frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend"))
+
+# if os.path.exists(frontend_dir):
+#     app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+
+# @app.get("/")
+# def serve_index():
+#     index_file = os.path.join(frontend_dir, "index.html")
+#     if os.path.exists(index_file):
+#         return FileResponse(index_file)
+#     return {"message": "IP Sakti Backend API is running. Frontend directory not found at " + frontend_dir}

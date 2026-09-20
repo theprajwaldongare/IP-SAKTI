@@ -15,7 +15,7 @@ async function calculateNbaAbs() {
     resultBox.style.display = "block";
 
     try {
-        const response = await fetch("/api/nba-calculator", {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/nba-calculator`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

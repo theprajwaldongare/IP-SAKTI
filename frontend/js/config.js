@@ -1,0 +1,8 @@
+/**
+ * Global Configuration for IP Sakti Frontend
+ */
+const CONFIG = {
+    // Put your Render URL here when you deploy, e.g., "https://ip-sakti-backend.onrender.com"
+    // Leave it as "http://127.0.0.1:8000" for local testing
+    API_BASE_URL: "http://127.0.0.1:8000" 
+};
