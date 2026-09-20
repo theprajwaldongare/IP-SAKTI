@@ -1,0 +1,20 @@
+[package]
+# REPLACE "your_wasmer_username" with your actual username from the Wasmer dashboard!
+name = "prajwal112/ip-sakti-backend"
+version = "0.1.0"
+description = "FastAPI backend for SIH prototype"
+
+[dependencies]
+# This tells Wasmer to download Python 3.11 for your WebAssembly container
+"wasmer/python" = "3.11.0"
+
+[fs]
+# This maps your local backend folder to the /app folder inside the Wasmer container
+"/app" = "."
+
+[[command]]
+name = "server"
+module = "wasmer/python:python"
+runner = "wasi"
+# This tells Wasmer to execute your run.py file to start the server
+annotations = { wasi = { main-args = ["/app/run.py"] } }

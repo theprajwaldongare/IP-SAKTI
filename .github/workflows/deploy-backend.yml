@@ -1,0 +1,25 @@
+name: Deploy Backend to Wasmer
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'  # 💀 THE HACKATHON TRICK
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Wasmer
+        uses: wasmerio/setup-wasmer@v3.1
+
+      - name: Deploy to Wasmer Edge
+        env:
+          WASMER_TOKEN: ${{ secrets.WASMER_TOKEN }}
+        run: |
+          cd backend
+          wasmer deploy --non-interactive

@@ -1,0 +1,5 @@
+kind: wasmer.io/App.v0
+name: ip-sakti-backend
+# REPLACE with your actual Wasmer username
+owner: your_wasmer_username
+package: your_wasmer_username/ip-sakti-backend
