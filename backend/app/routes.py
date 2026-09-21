@@ -1,7 +1,6 @@
 """
 FastAPI Router for IP Sakti Endpoints.
 """
-import edge_tts
 from fastapi import APIRouter, HTTPException, Response
 from pydantic import BaseModel
 from typing import List, Dict, Any
@@ -231,6 +230,7 @@ def tkdl_search_endpoint(q: str = ""):
 
 
 # --- LIGHTNING FAST NEURAL TTS ARCHITECTURE ---
+import edge_tts
 class TTSRequest(BaseModel):
     text: str
     language: str = "en"
