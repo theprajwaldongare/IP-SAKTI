@@ -4,6 +4,5 @@ owner: prajwal112
 annotations:
   anybuild.run/config:
     commands:
-      install: pip install -r backend/requirements.txt --target /app
       start: python backend/run.py
     python_main_file: backend/run.py
