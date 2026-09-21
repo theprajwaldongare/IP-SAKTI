@@ -9,6 +9,8 @@ if hasattr(sys.stdout, 'reconfigure'):
     except Exception:
         pass
 
+    # nothing
+
 # Ensure backend root directory is in python path
 backend_dir = os.path.dirname(os.path.abspath(__file__))
 if backend_dir not in sys.path:
