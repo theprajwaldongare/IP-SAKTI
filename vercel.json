@@ -4,18 +4,14 @@
       "src": "run.py",
       "use": "@vercel/python",
       "config": {
-        "maxDuration": 60
+        "maxDuration": 300
       }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": "/run.py"
-    },
-    {
-      "source": "/health",
-      "destination": "/run.py"
+      "src": "/(.*)",
+      "dest": "run.py"
     }
   ]
 }
