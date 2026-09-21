@@ -1,8 +1,0 @@
-kind: wasmer.io/App.v0
-name: python-ip-sakti
-owner: prajwal112
-annotations:
-  anybuild.run/config:
-    commands:
-      install: uv sync
-      start: python run.py

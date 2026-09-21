@@ -32,3 +32,6 @@ if __name__ == "__main__":
     # Cloud providers require 0.0.0.0 to allow external web traffic
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run("app.main:app", host="0.0.0.0", port=port)
+
+from mangum import Mangum
+handler = Mangum(app)

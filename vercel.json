@@ -1,0 +1,19 @@
+{
+  "builds": [
+    {
+      "src": "run.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "run.py"
+    }
+  ],
+  "functions": {
+    "run.py": {
+      "maxDuration": 300
+    }
+  }
+}
