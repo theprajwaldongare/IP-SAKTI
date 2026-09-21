@@ -5,4 +5,4 @@ annotations:
   anybuild.run/config:
     commands:
       install: uv sync
-      start: python backend/run.py
+      start: python run.py
