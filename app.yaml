@@ -1,5 +1,5 @@
 kind: wasmer.io/App.v0
-name: ip-sakti
+name: python-ip-sakti
 owner: prajwal112
 annotations:
   anybuild.run/config:
