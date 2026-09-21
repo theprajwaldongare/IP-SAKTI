@@ -88,18 +88,31 @@ async function sendChatMessage(customQuery = null) {
         
         const safeText = encodeURIComponent(stripMarkdownForSpeech(rawAnswer)).replace(/'/g, "%27");
         
+        // botBubble.innerHTML = `
+        //     <div>${formatMarkdown(rawAnswer)}</div>
+        //     <div class="tts-action-row" style="margin-top:0.8rem; display:flex; gap:0.5rem;">
+        //         <button class="tts-btn play-btn" onclick="playTextToSpeech(decodeURIComponent('${safeText}'), this)" title="Listen to answer">
+        //             <i class="fas fa-volume-up"></i> Listen
+        //         </button>
+        //         <button class="tts-btn stop-btn" onclick="stopSpeaking()" title="Stop voice">
+        //             <i class="fas fa-stop"></i> Stop
+        //         </button>
+        //     </div>
+        // `;
+        // messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
         botBubble.innerHTML = `
             <div>${formatMarkdown(rawAnswer)}</div>
-            <div class="tts-action-row" style="margin-top:0.8rem; display:flex; gap:0.5rem;">
-                <button class="tts-btn play-btn" onclick="playTextToSpeech(decodeURIComponent('${safeText}'), this)" title="Listen to answer">
-                    <i class="fas fa-volume-up"></i> Listen
-                </button>
-                <button class="tts-btn stop-btn" onclick="stopSpeaking()" title="Stop voice">
-                    <i class="fas fa-stop"></i> Stop
-                </button>
-            </div>
+                <div class="tts-action-row" style="margin-top:0.8rem; display:flex; gap:0.5rem;">
+                    <button class="tts-btn play-btn" onclick="playTextToSpeech(decodeURIComponent('${safeText}'), this)" title="Listen to answer">
+                        <i class="fas fa-volume-up"></i> Listen
+                    </button>
+                    <button class="tts-btn stop-btn" onclick="stopSpeaking()" title="Stop voice">
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+                </div>
         `;
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        botBubble.scrollIntoView({ behavior: "smooth", block: "start" });
 
     } catch (err) {
         // console.error("Chat error:", err);
