@@ -32,7 +32,7 @@ def call_gemini_api(prompt: str, system_instruction: str) -> str:
     }
     
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=45)
+        response = requests.post(url, headers=headers, json=payload, timeout=90)
         if response.status_code == 200:
             res_json = response.json()
             candidates = res_json.get("candidates", [])
