@@ -1,17 +1,28 @@
 import os
 import sys
-from mangum import Mangum
 
-# Point Python to the backend folder
+# Point Python to the backend folder so imports don't break
 backend_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "backend")
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
 
-# Import your app directly
+# Import your app directly so Vercel's builder can natively detect it
 from app.main import app
 
-# Wrap it for Vercel
-handler = Mangum(app)
+# import os
+# import sys
+# from mangum import Mangum
+
+# # Point Python to the backend folder
+# backend_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "backend")
+# if backend_dir not in sys.path:
+#     sys.path.insert(0, backend_dir)
+
+# # Import your app directly
+# from app.main import app
+
+# # Wrap it for Vercel
+# handler = Mangum(app)
 
 # import uvicorn
 # import os

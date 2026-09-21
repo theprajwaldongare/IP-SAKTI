@@ -8,10 +8,10 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "run.py"
+      "source": "/api/(.*)",
+      "destination": "/run.py"
     }
   ]
 }
