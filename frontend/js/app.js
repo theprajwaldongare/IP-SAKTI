@@ -52,7 +52,7 @@ async function checkBackendHealth() {
             const data = await res.json();
             statusPill.innerHTML = `
                 <div class="status-dot"></div>
-                <span>Backend RAG Active ${data.gemini_api_configured ? '(Gemini AI)' : '(Offline Synthesis)'}</span>
+                <span>Backend RAG Active ${data.gemini_api_configured ? '' : '(Offline Synthesis)'}</span>
             `;
             statusPill.style.borderColor = "var(--primary-mint)";
         } else {

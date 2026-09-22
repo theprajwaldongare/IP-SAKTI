@@ -45,7 +45,7 @@ def call_gemini_api(prompt: str, system_instruction: str) -> str:
     except Exception as e:
         return f"[Gemini API Exception]: {e}"
         
-    return "Error: Failed to generate response from Gemini API."
+    return "Error: Failed to generate response from API."
 
 def generate_rag_response(query: str, lang: str = "en", jurisdiction: str = "india", rag_data: Dict[str, Any] = None) -> str:
     """Generate response using Gemini API with strict language & jurisdiction rules."""
